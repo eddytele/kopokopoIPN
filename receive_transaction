@@ -1,0 +1,88 @@
+<?php
+// Receive Json data from kopokopo
+$post_content = file_get_contents("php://input");
+$data = json_decode($post_content, TRUE);
+// Get all the fields from the post request
+if(isset($data['service_name'])){
+    $service_name = $data['service_name'];
+    $business_number = $data['business_number'];
+
+    $transaction_reference = $data['transaction_reference'];
+
+    $internal_transaction_id = $data['internal_transaction_id'];
+
+    $transaction_timestamp = $data['transaction_timestamp'];
+
+    $transaction_type = $data['transaction_type'];
+$amount = $data['amount'];
+    $first_name = $data['first_name'];
+
+    $last_name = $data['last_name'];
+
+    $middle_name = $data['middle_name'];
+
+    $sender_phone = $data['sender_phone'];
+
+    $currency = $data['currency'];
+
+    $account_number = $data['account_number'];
+
+    $signature = $data['signature'];
+}
+
+else
+{
+$service_name = $_POST['service_name'];
+    $business_number = $_POST['business_number'];
+
+    $transaction_reference = $_POST['transaction_reference'];
+
+    $internal_transaction_id = $_POST['internal_transaction_id'];
+
+    $transaction_timestamp = $_POST['transaction_timestamp'];
+
+    $transaction_type = $_POST['transaction_type'];
+$amount = $_POST['amount'];
+    $first_name = $_POST['first_name'];
+
+    $last_name = $_POST['last_name'];
+
+    $middle_name = $_POST['middle_name'];
+
+    $sender_phone = $_POST['sender_phone'];
+
+    $currency = $_POST['currency'];
+
+    $account_number = $_POST['account_number'];
+
+    $signature = $_POST['signature'];
+}
+
+    // create the response
+  
+$data1 = array(
+        'status' => '01',
+        'description' => 'Accepted',
+        'subscriber_message' => 'Funds have been received into your account.'.$transaction_reference
+    );
+$data2 = array(
+        'status' => '02',
+        'description' => 'Account not found',
+        'subscriber_message' => 'Funds have not been received into your account.'
+    );
+
+$data3 = array(
+        'status' => '03',
+        'description' => 'Invalid payment',
+        'subscriber_message' => 'Funds have not been received into your account.'
+    );
+// Send response to api
+$option = 1; 
+header('Content-type: application/json');
+if ( $option == 1 )
+  echo json_encode( $data1 );
+else if ( $option == 2 )
+  echo json_encode( $data2 );
+else
+  echo json_encode( $data3 );
+?>
